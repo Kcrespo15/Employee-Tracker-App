@@ -1,9 +1,11 @@
+-- DEPARTMENT SEEDS 
 INSERT INTO department (id, department)
 VALUES (1, "Sales"),
 (2, "Engineering"),
 (3, "Finance"),
 (4, "Legal");
 
+-- EMPLOYEE ROLE SEEDS 
 INSERT INTO role (id, title, salary, department_id)
 VALUES (1, "Sales Lead", 150000, 1),
 (2, "Salesperson", 100000, 1),
@@ -14,7 +16,7 @@ VALUES (1, "Sales Lead", 150000, 1),
 (7, "Legal Team Lead", 300000, 4),
 (8, "Lawyer", 175000, 4);
 
--- entire manager_id column is populating as null
+-- EMPLOYEE SEEDS 
 INSERT INTO employee (id, first_name, last_name, role_id)
 VALUES (1, "Nick", "James", 1),
 (2, "John", "Smith", 2),
