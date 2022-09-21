@@ -11,7 +11,7 @@ const connection = mysql.createConnection({
     port: 3306,
     user: "root",
     password: "password",
-    database: "eemployee_trackerdb"
+    database: "employee_trackerdb"
   });
 
   // ESTABLISHED CONNECTION TO SERVER MAIN DISPLAY ON TERMINAL
@@ -183,5 +183,112 @@ function addEmployee() {
       })
 
   })
-}
+};
 
+//  Update Employee 
+
+function updateEmployee() {
+    connection.query("SELECT employee.last_name, role.title FROM employee JOIN role ON employee.role_id = role.id;", function(err, res) {
+     if (err) throw err
+     console.log(res)
+    inquirer.prompt([
+          {
+            name: "lastName",
+            type: "rawlist",
+            choices: function() {
+              var lastName = [];
+              for (var i = 0; i < res.length; i++) {
+                lastName.push(res[i].last_name);
+              }
+              return lastName;
+            },
+            message: "What is the Employee's last name? ",
+          },
+          {
+            name: "role",
+            type: "rawlist",
+            message: "What is the Employees new title? ",
+            choices: selectRole()
+          },
+      ]).then(function(val) {
+        var roleId = selectRole().indexOf(val.role) + 1
+        connection.query("UPDATE employee SET WHERE ?", 
+        {
+          last_name: val.lastName
+           
+        }, 
+        {
+          role_id: roleId
+           
+        }, 
+        function(err){
+            if (err) throw err
+            console.table(val)
+            init()
+        })
+  
+    });
+  });
+
+  };
+
+//   Add Employee Role
+
+function addRole() { 
+    connection.query("SELECT role.title AS Title, role.salary AS Salary FROM role",   function(err, res) {
+      inquirer.prompt([
+          {
+            name: "Title",
+            type: "input",
+            message: "What is the roles Title?"
+          },
+          {
+            name: "Salary",
+            type: "input",
+            message: "What is the Salary?"
+  
+          } 
+      ]).then(function(res) {
+          connection.query(
+              "INSERT INTO role SET ",
+              {
+                title: res.Title,
+                salary: res.Salary,
+              },
+              function(err) {
+                  if (err) throw err
+                  console.table(res);
+                  init();
+              }
+          )
+  
+      });
+    });
+    }
+
+    // Add Department
+
+    function addDepartment() { 
+
+        inquirer.prompt([
+            {
+              name: "name",
+              type: "input",
+              message: "What Department would you like to add?"
+            }
+        ]).then(function(res) {
+            var query = connection.query(
+                "INSERT INTO department SET ? ",
+                {
+                  name: res.name
+                
+                },
+                function(err) {
+                    if (err) throw err
+                    console.table(res);
+                    init();
+                }
+            )
+        })
+      }
+    

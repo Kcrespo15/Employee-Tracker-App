@@ -1,9 +1,9 @@
 -- DEPARTMENT SEEDS 
-INSERT INTO department (id, department)
-VALUES (1, "Sales"),
-(2, "Engineering"),
-(3, "Finance"),
-(4, "Legal");
+INSERT INTO department (department)
+VALUES ("Sales"),
+("Engineering"),
+("Finance"),
+("Legal");
 
 -- EMPLOYEE ROLE SEEDS 
 INSERT INTO role (title, salary, department_id)
