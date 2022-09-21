@@ -1,9 +1,11 @@
 // INSTALL DEPENDENCIES
+
 const inquirer = require("inquirer");
 const mysql = require("mysql");
-const cTable = require('console.table');
+const cTable = require("console.table");
 
 // CREATING CONNECTION TO SERVER
+
 const connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
@@ -13,6 +15,7 @@ const connection = mysql.createConnection({
   });
 
   // ESTABLISHED CONNECTION TO SERVER MAIN DISPLAY ON TERMINAL
+
   connection.connect(function(err) {
     if (err) throw err
     console.log("Connected as Id" + connection.threadId)
@@ -20,6 +23,7 @@ const connection = mysql.createConnection({
 });
 
 // INITIAL PROMPTS & SWITCH CASE
+
 function init() {
     inquirer.prompt([
     {
@@ -69,9 +73,10 @@ function init() {
     
             }
     })
-}
+};
 
 // View All Employees
+
 function viewAllEmployees() {
     connection.query("SELECT employee.first_name, employee.last_name, role.title, role.salary, department.name, CONCAT(e.first_name, ' ' ,e.last_name) AS Manager FROM employee INNER JOIN role on role.id = employee.role_id INNER JOIN department on department.id = role.department_id left join employee e on employee.manager_id = e.id;", 
     function(err, res) {
@@ -79,9 +84,10 @@ function viewAllEmployees() {
       console.table(res)
       init()
   })
-}
+};
 
 // View All Roles
+
 function viewAllRoles() {
     connection.query("SELECT employee.first_name, employee.last_name, role.title AS Title FROM employee JOIN role ON employee.role_id = role.id;", 
     function(err, res) {
@@ -89,9 +95,10 @@ function viewAllRoles() {
     console.table(res)
     init()
     })
-  }
+  };
 
 //  View All Employees By Departments
+
 function viewAllDepartments() {
     connection.query("SELECT employee.first_name, employee.last_name, department.name AS Department FROM employee JOIN role ON employee.role_id = role.id JOIN department ON role.department_id = department.id ORDER BY employee.id;", 
     function(err, res) {
@@ -99,10 +106,11 @@ function viewAllDepartments() {
       console.table(res)
       init()
     })
-  }
+  };
 
 
 //  Select Role Quieries : Employee
+
 var roleArray = [];
 
 function selectRole() {
@@ -114,10 +122,12 @@ function selectRole() {
 
   })
   return roleArray;
-}
+};
 
 // Select Manager Quieries
+
 var managersArray = [];
+
 function selectManager() {
   connection.query("SELECT first_name, last_name FROM employee WHERE manager_id IS NULL", function(err, res) {
     if (err) throw err
@@ -128,6 +138,50 @@ function selectManager() {
   })
   return managersArray;
 
-}
+};
 
+// Add Employee
+
+function addEmployee() { 
+    inquirer.prompt([
+        {
+          name: "firstname",
+          type: "input",
+          message: "Enter their first name "
+        },
+        {
+          name: "lastname",
+          type: "input",
+          message: "Enter their last name "
+        },
+        {
+          name: "role",
+          type: "list",
+          message: "What is their role? ",
+          choices: selectRole()
+        },
+        {
+            name: "choice",
+            type: "rawlist",
+            message: "Whats their managers name?",
+            choices: selectManager()
+        }
+    ]).then(function (val) {
+      var roleId = selectRole().indexOf(val.role) + 1
+      var managerId = selectManager().indexOf(val.choice) + 1
+      connection.query("INSERT INTO employee SET ?", 
+      {
+          first_name: val.firstName,
+          last_name: val.lastName,
+          manager_id: managerId,
+          role_id: roleId
+          
+      }, function(err){
+          if (err) throw err
+          console.table(val)
+          init()
+      })
+
+  })
+}
 
