@@ -92,3 +92,42 @@ function viewAllRoles() {
   }
 
 //  View All Employees By Departments
+function viewAllDepartments() {
+    connection.query("SELECT employee.first_name, employee.last_name, department.name AS Department FROM employee JOIN role ON employee.role_id = role.id JOIN department ON role.department_id = department.id ORDER BY employee.id;", 
+    function(err, res) {
+      if (err) throw err
+      console.table(res)
+      init()
+    })
+  }
+
+
+//  Select Role Quieries : Employee
+var roleArray = [];
+
+function selectRole() {
+  connection.query("SELECT * FROM role", function(err, res) {
+    if (err) throw err
+    for (var i = 0; i < res.length; i++) {
+      roleArray.push(res[i].title);
+    }
+
+  })
+  return roleArray;
+}
+
+// Select Manager Quieries
+var managersArray = [];
+function selectManager() {
+  connection.query("SELECT first_name, last_name FROM employee WHERE manager_id IS NULL", function(err, res) {
+    if (err) throw err
+    for (var i = 0; i < res.length; i++) {
+      managersArray.push(res[i].first_name);
+    }
+
+  })
+  return managersArray;
+
+}
+
+
