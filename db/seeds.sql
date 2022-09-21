@@ -18,10 +18,10 @@ VALUES ("Sales Lead", 150000, 1),
 
 -- EMPLOYEE SEEDS 
 INSERT INTO employee (id, first_name, last_name, role_id)
-VALUES (1, "Nick", "James", 1),
-(2, "John", "Smith", 2),
-(3, "Tom", "Brady", 3),
-(4, "Jimmy", "Hoffa", 4),
+VALUES (1, "Nick", "James", 1, null),
+(2, "John", "Smith", 2, null),
+(3, "Tom", "Brady", 3, null),
+(4, "Jimmy", "Hoffa", 4, null),
 (5, "Jerry", "Les", 5),
 (6, "Lucy", "Joe", 6),
 (7, "Sam", "Munoz", 7),
