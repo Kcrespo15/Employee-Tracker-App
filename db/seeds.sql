@@ -17,12 +17,12 @@ VALUES ("Sales Lead", 150000, 1),
 ("Lawyer", 175000, 4);
 
 -- EMPLOYEE SEEDS 
-INSERT INTO employee (id, first_name, last_name, role_id)
-VALUES (1, "Nick", "James", 1, null),
-(2, "John", "Smith", 2, null),
-(3, "Tom", "Brady", 3, null),
-(4, "Jimmy", "Hoffa", 4, null),
-(5, "Jerry", "Les", 5),
-(6, "Lucy", "Joe", 6),
-(7, "Sam", "Munoz", 7),
-(8, "Rick", "Cousins", 8);
+INSERT INTO employee (first_name, last_name, manager_id, role_id)
+VALUES ("Nick", "James", null, 1),
+("John", "Smith", null, 2),
+("Tom", "Brady", null, 3),
+("Jimmy", "Hoffa", 1, 4),
+("Jerry", "Les", 4, 5),
+("Lucy", "Joe", 1, 6),
+("Sam", "Munoz", 2, 7),
+("Rick", "Cousins", 4, 8);
