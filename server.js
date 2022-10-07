@@ -33,7 +33,7 @@ function init() {
     choices: [
               "View All Employees", 
               "View All Employee's By Roles",
-              "View all Emplyees By Deparments", 
+              "View all Employees By Departments", 
               "Update Employee",
               "Add Employee",
               "Add Role",
@@ -51,7 +51,7 @@ function init() {
               viewAllRoles();
             break;
 
-          case "View all Emplyees By Deparments":
+          case "View all Employees By Departments":
               viewAllDepartments();
             break;
           
@@ -223,13 +223,12 @@ function updateEmployee() {
         }, 
         function(err){
             if (err) throw err
-            console.table(val)
+            console.table(res)
             init()
         })
   
     });
   });
-
   };
 
 //   Add Employee Role
