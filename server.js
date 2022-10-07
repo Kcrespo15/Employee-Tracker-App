@@ -186,52 +186,32 @@ function addEmployee() {
 };
 
 //  Update Employee 
-
-function updateEmployee() {
-    connection.query("SELECT employee.last_name, role.title FROM employee JOIN role ON employee.role_id = role.id;", function(err, res) {
-     if (err) throw err
-     console.log(res)
-    inquirer.prompt([
-          {
-            name: "lastName",
-            type: "rawlist",
-            choices: function() {
-              var lastName = [];
-              for (var i = 0; i < res.length; i++) {
-                lastName.push(res[i].last_name);
-              }
-              return lastName;
-            },
-            message: "What is the Employee's last name? ",
-          },
-          {
-            name: "role",
-            type: "rawlist",
-            message: "What is the Employees new title? ",
-            choices: selectRole()
-          },
-      ]).then((val) => {
-        var roleId = selectRole().indexOf(val.role) + 1
-        connection.query("UPDATE employee SET WHERE ?", 
-        {
-          last_name: val.lastName
-           
-        }, 
-        {
-          role_id: roleId
-           
-        }, 
-        function(err){
-            if (err) throw err
-            console.table(res)
-            init()
-        })
-  
+const updateEmployee = () => {
+  inquirer
+    .prompt([
+      {
+        name: "id",
+        type: "input",
+        message: "What is your employee ID?",
+      },
+      {
+        name: "role",
+        type: "input",
+        message: "What is your role ID?",
+      },
+    ])
+    .then((answers) => {
+      const query = `UPDATE employee SET role_id = ? WHERE id = ?`;
+      connection.query(query, [answers.id, answers.role], (err, results) => {
+        if (err) throw err;
+        console.log(results);
+        init();
+      });
+    })
+    .catch((err) => {
+      throw err;
     });
-  });
-  };
-
-//   Add Employee Role
+};
 
 function addRole() { 
     connection.query("SELECT role.title AS Title, role.salary AS Salary FROM role;",   function(err, res) {
